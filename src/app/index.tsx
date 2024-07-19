@@ -1,57 +1,108 @@
-import { View, Text, SafeAreaView } from "react-native";
-import { loadAsync } from "expo-font";
+import React, { useEffect, useState } from "react";
 
-import React from "react";
+import {
+  Button,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { Link } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import TicketPage from "@/module/TicketPage";
+const style = StyleSheet.create({
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 12,
 
-import OverpassExtrabold from "@/asset/fonts/Overpass-ExtraBold.ttf";
-import OverpassRegular from "@/asset/fonts/Overpass-Regular.ttf";
-import OverpassBlack from "@/asset/fonts/Overpass-Black.ttf";
-import OverpassBold from "@/asset/fonts/Overpass-Bold.ttf";
+    padding: 12,
+    margin: 12,
+  },
 
-import ResizeableProvider from "@/context/ResizeableContext";
+  headerContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+  },
 
-/**
- * Fetch the needed fonts
- */
-/* eslint-disable global-require */
-const fetchFonts = () => {
-  const fonts = {
-    "overpass-black": OverpassBlack,
-    "overpass-extrabold": OverpassExtrabold,
-    "overpass-bold": OverpassBold,
-    "overpass-regular": OverpassRegular,
-  };
+  ticketsContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 12,
+  },
 
-  return loadAsync(fonts);
-};
-/* eslint-enable global-require */
+  ticketContainer: {
+    display: "flex",
+    padding: 12,
+    borderWidth: 1,
+    borderColor: "#ababab",
+    borderRadius: 6,
+  },
+});
 
-const Index = () => {
-  const [dataLoaded, setDataLoaded] = React.useState(false);
+const Page = () => {
+  const [dates, setDates] = useState<Date[]>([]);
 
-  React.useEffect(() => {
-    fetchFonts()
-      .then(() => setDataLoaded(true))
-      .catch(null);
+  useEffect(() => {
+    (async () => {
+      const rawDates = await AsyncStorage.getItem("@dates");
+      if (!rawDates) return setDates([]);
+
+      const strDatesArray = JSON.parse(rawDates);
+      if (!Array.isArray(strDatesArray)) return setDates([]);
+
+      const dates = strDatesArray
+        .map((date) => new Date(date))
+        .filter((date) => !isNaN(date.getTime()));
+
+      setDates(dates);
+    })();
   }, []);
 
-  return dataLoaded ? (
-    <ResizeableProvider>
-      <TicketPage />
-    </ResizeableProvider>
-  ) : (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Loading...</Text>
-    </View>
+  useEffect(() => {
+    if (!dates.length) return;
+
+    (async () => {
+      await AsyncStorage.setItem("@dates", JSON.stringify(dates));
+    })();
+  }, [dates]);
+
+  const addDate = () => {
+    setDates([...dates, new Date()]);
+  };
+
+  return (
+    <SafeAreaView style={style.container}>
+      <View style={style.headerContainer}>
+        <Button title="Créer un ticket !" onPress={addDate} />
+        <Button
+          title="Supprimer les tickets"
+          color="red"
+          onPress={() => setDates([])}
+        />
+      </View>
+
+      <ScrollView contentContainerStyle={style.ticketsContainer}>
+        {dates
+          .sort((a, b) => b.getTime() - a.getTime())
+          .map((date) => (
+            <Link
+              key={date.toISOString()}
+              href={{
+                pathname: "/ticket",
+                params: { date: date.toISOString() },
+              }}
+              style={style.ticketContainer}
+            >
+              <Text>{date.toLocaleString()}</Text>
+            </Link>
+          ))}
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
-export default Index;
+export default Page;

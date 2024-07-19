@@ -14,6 +14,7 @@ import React from "react";
 import ArrowIcon from "@/asset/arrow.png";
 import QRCode from "@/asset/qrcode.png";
 import { useResizeable } from "@/context/ResizeableContext";
+import { Link } from "expo-router";
 
 const style = StyleSheet.create({
   container: {
@@ -43,10 +44,12 @@ const TopIcons: FC = () => {
 
   return (
     <View style={style.container}>
-      <Image
-        style={{ width: IS_IOS ? 32 : 26, height: IS_IOS ? 32 : 26 }}
-        source={ArrowIcon}
-      />
+      <Link href="/">
+        <Image
+          style={{ width: IS_IOS ? 32 : 26, height: IS_IOS ? 32 : 26 }}
+          source={ArrowIcon}
+        />
+      </Link>
 
       <TouchableWithoutFeedback onPress={toggleResizeModal}>
         <Image

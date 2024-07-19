@@ -12,7 +12,12 @@ import type { FC } from "react";
 
 import React from "react";
 
-import { getAfterHour, getFormatedDate } from "@/helper/date.helper";
+import {
+  addHours,
+  formatHour,
+  getAfterHour,
+  getFormatedDate,
+} from "@/helper/date.helper";
 
 import UserImage from "@/asset/user.png";
 import ResizeableText from "@/element/ResizeableText";
@@ -56,7 +61,7 @@ const ControlInfos: FC<IProps> = ({ date }) => {
         id="control-informations-end-time-text"
         style={{ fontFamily: "overpass-regular", marginTop: -5 }}
       >
-        {getAfterHour(date).toString()}
+        {formatHour(addHours(date, 2))}
       </ResizeableText>
 
       <ResizeableText

@@ -1,10 +1,8 @@
 import { Animated, ImageBackground, View } from "react-native";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import ControlInfos from "@/module/ControlInfos";
 
 import Time from "@/class/Time";
-
-import { getAfterHour, getBeforeHour } from "@/helper/date.helper";
 
 import BackgroundImage from "@/asset/background.png";
 import BackgroundTestImage from "@/asset/background_test.png";
@@ -18,28 +16,20 @@ import TopIcons from "@/module/TopIcons";
 import TicketInfos from "@/module/TicketInfos";
 import StatusBar from "@/module/StatusBar";
 
-const TicketPage = () => {
+interface IProps {
+  date: Date;
+}
+
+const TicketPage = ({ date }: IProps) => {
   const { isResizeMode } = useResizeable();
 
   const animationStyle = useTicketPageAnimation();
 
-  const [date, setDate] = useState(new Date());
-
-  const beforeHour = useMemo(() => getBeforeHour(date), [date]);
-  const afterHour = useMemo(() => getAfterHour(date), [date]);
-
-  const intervalSecondsDiff = afterHour.asSeconds() - beforeHour.asSeconds();
-
   const nowSecondsDiff = useMemo(
-    () => Time.fromDate(date).asSeconds() - beforeHour.asSeconds(),
-    [date, beforeHour],
+    () =>
+      Time.fromDate(new Date()).asSeconds() - Time.fromDate(date).asSeconds(),
+    [date],
   );
-
-  useEffect(() => {
-    const handler = setTimeout(() => setDate(new Date()), 60 * 1000);
-
-    return () => clearTimeout(handler);
-  }, [date]);
 
   return (
     <Animated.View
@@ -69,9 +59,7 @@ const TicketPage = () => {
           <SpinnerContainer />
           <TicketInfos date={date} />
           <ControlInfos date={date} />
-          <StatusBar
-            percentage={(nowSecondsDiff / intervalSecondsDiff) * 100}
-          />
+          <StatusBar percentage={(nowSecondsDiff / (2 * 60 * 60)) * 100 + 1} />
         </View>
       </ImageBackground>
     </Animated.View>

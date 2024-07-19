@@ -1,6 +1,6 @@
-import Time, { ITime } from '@/class/Time';
-import { getCloserOddOrIncrement, getOdds } from '@/helper/number.helper';
-import { formatNumber } from '@/helper/string.helper';
+import Time, { ITime } from "@/class/Time";
+import { getCloserOddOrIncrement, getOdds } from "@/helper/number.helper";
+import { formatNumber } from "@/helper/string.helper";
 
 /**
  * Format a date to the format dd/mm/yyyy
@@ -21,7 +21,7 @@ export const getFormatedDate = (date: Date): string => {
  * @returns A number
  */
 export const getHourAsSeconds = (hour: string): number => {
-  const [h, m] = hour.split(':').map(parseInt);
+  const [h, m] = hour.split(":").map(parseInt);
 
   return h * 60 * 60 + m * 60;
 };
@@ -64,4 +64,15 @@ export const getAfterHour = (date: Date): ITime => {
   const hour = getCloserOddOrIncrement(getOdds(24), m > 8 ? h + 1 : h, 1);
 
   return new Time(hour, 0);
+};
+
+/**
+ * Add hours to a date
+ * @param date The date to add hours to
+ * @param hours The amount of hours to add
+ */
+export const addHours = (date: Date, hours: number): Date => {
+  const newDate = new Date(date);
+  newDate.setHours(newDate.getHours() + hours);
+  return newDate;
 };

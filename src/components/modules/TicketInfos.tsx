@@ -5,6 +5,8 @@ import type { FC } from "react";
 import React from "react";
 
 import {
+  addHours,
+  formatHour,
   getAfterHour,
   getBeforeHour,
   getFormatedDate,
@@ -65,7 +67,7 @@ const TicketInfos: FC<IProps> = ({ date }) => {
             id="ticket-infos-start-time-text"
             style={{ fontFamily: "overpass-regular" }}
           >
-            {getBeforeHour(date).toString()}
+            {formatHour(date)}
           </ResizeableText>
         </View>
         <View style={{ alignItems: "center" }}>
@@ -73,13 +75,13 @@ const TicketInfos: FC<IProps> = ({ date }) => {
             id="ticket-infos-end-date-text"
             style={{ fontFamily: "overpass-black" }}
           >
-            {getFormatedDate(date)}
+            {getFormatedDate(addHours(date, 2))}
           </ResizeableText>
           <ResizeableText
             id="ticket-infos-end-time-text"
             style={{ fontFamily: "overpass-regular" }}
           >
-            {getAfterHour(date).toString()}
+            {formatHour(addHours(date, 2))}
           </ResizeableText>
         </View>
       </View>

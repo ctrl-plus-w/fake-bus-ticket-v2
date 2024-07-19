@@ -27,7 +27,7 @@ const StatusBar: FC<IProps> = ({ percentage = 10 }) => (
   <ResizeableContainer id="status-bar-container" style={style.container}>
     <View
       style={{
-        width: `${percentage}%`,
+        width: `${Math.min(percentage, 100)}%`,
         height: "100%",
 
         backgroundColor: "#14cd45",
