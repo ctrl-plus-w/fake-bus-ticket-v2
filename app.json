@@ -1,5 +1,4 @@
 {
-
   "expo": {
     "name": "fake-bus-ticket-v2",
     "scheme": "com.lukaslaudrain.fake-bus-ticket-v2",
@@ -27,6 +26,20 @@
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "55af4bfb-59e2-4b94-b2b3-25797ad65968"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/55af4bfb-59e2-4b94-b2b3-25797ad65968"
+    }
   }
 }
