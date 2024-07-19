@@ -1,23 +1,22 @@
-import { ImageBackground, View } from 'react-native';
-import { useEffect, useMemo, useState } from 'react';
+import { Animated, ImageBackground } from "react-native";
+import React, { useEffect, useMemo, useState } from "react";
+import ControlInfos from "@/module/ControlInfos";
 
-import type { FC } from 'react';
+import Time from "@/class/Time";
 
-import React from 'react';
+import { getAfterHour, getBeforeHour } from "@/helper/date.helper";
 
-import SpinnerContainer from '@/module/SpinnerContainer';
-import ControlInfos from '@/module/ControlInfos';
-import TicketInfos from '@/module/TicketInfos';
-import StatusBar from '@/module/StatusBar';
-import TopIcons from '@/module/TopIcons';
+import BackgroundImage from "@/asset/background.png";
 
-import Time from '@/class/Time';
+import { useTicketPageAnimation } from "@/context/ResizeableContext";
+import SpinnerContainer from "@/module/SpinnerContainer";
+import TopIcons from "@/module/TopIcons";
+import TicketInfos from "@/module/TicketInfos";
+import StatusBar from "@/module/StatusBar";
 
-import { getAfterHour, getBeforeHour } from '@/helper/date.helper';
+const TicketPage = () => {
+  const animationStyle = useTicketPageAnimation();
 
-import BackgroundImage from '@/asset/background.png';
-
-const TicketPage: FC = () => {
   const [date, setDate] = useState(new Date());
 
   const beforeHour = useMemo(() => getBeforeHour(date), [date]);
@@ -37,13 +36,22 @@ const TicketPage: FC = () => {
   }, [date]);
 
   return (
-    <View style={{ flex: 1, borderStyle: 'solid', borderWidth: 1, borderColor: 'red' }}>
+    <Animated.View
+      style={[
+        {
+          flex: 1,
+          transformOrigin: "top center",
+          overflow: "hidden",
+        },
+        animationStyle,
+      ]}
+    >
       <ImageBackground
         source={BackgroundImage}
-        resizeMode='cover'
+        resizeMode="cover"
         style={{
           flex: 1,
-          alignItems: 'center',
+          alignItems: "center",
         }}
       >
         <SpinnerContainer />
@@ -52,7 +60,7 @@ const TicketPage: FC = () => {
         <ControlInfos date={date} />
         <StatusBar percentage={(nowSecondsDiff / intervalSecondsDiff) * 100} />
       </ImageBackground>
-    </View>
+    </Animated.View>
   );
 };
 

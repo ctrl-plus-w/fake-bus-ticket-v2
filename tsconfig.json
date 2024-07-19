@@ -7,11 +7,15 @@
 
     "paths": {
       "@/module/*": ["./components/modules/*"],
+      "@/element/*": ["./components/elements/*"],
+      "@/context/*": ["./contexts/*"],
+      "@/constant/*": ["./constants/*"],
+      "@/type/*": ["./types/*"],
       "@/helper/*": ["./helpers/*"],
       "@/asset/*": ["./assets/*"],
       "@/class/*": ["./classes/*"]
     },
 
-    "typeRoots": ["src/types"]
+    "typeRoots": ["src/types/*.d.ts"]
   }
 }

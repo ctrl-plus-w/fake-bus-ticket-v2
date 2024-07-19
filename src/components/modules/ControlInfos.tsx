@@ -1,12 +1,22 @@
-import { View, Text, StyleSheet, Platform, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Platform,
+  Image,
+  Touchable,
+  TouchableWithoutFeedback,
+} from "react-native";
 
-import type { FC } from 'react';
+import type { FC } from "react";
 
-import React from 'react';
+import React from "react";
 
-import { getAfterHour, getFormatedDate } from '@/helper/date.helper';
+import { getAfterHour, getFormatedDate } from "@/helper/date.helper";
 
-import UserImage from '@/asset/user.png';
+import UserImage from "@/asset/user.png";
+import ResizeableText from "@/element/ResizeableText";
+import ResizeableContainer from "@/element/ResizeableContainer";
 
 interface IProps {
   date: Date;
@@ -15,81 +25,50 @@ interface IProps {
 const style = StyleSheet.create({
   container: {
     zIndex: 1,
-    position: 'absolute',
-
-    backgroundColor: '#ffffff',
-
-    alignItems: 'center',
-
+    position: "absolute",
+    backgroundColor: "#ffffff",
+    alignItems: "center",
     borderRadius: 16,
-
-    paddingHorizontal: 15,
-
-    ...Platform.select({
-      ios: {
-        top: 702,
-
-        width: 384,
-        height: 115,
-
-        paddingVertical: 6,
-      },
-      android: {
-        top: 671,
-
-        width: 368,
-        height: 110,
-
-        paddingVertical: 5,
-      },
-    }),
   },
 });
 
 const ControlInfos: FC<IProps> = ({ date }) => {
-  const IS_IOS = Platform.OS === 'ios';
-
   return (
-    <View style={style.container} pointerEvents='none'>
-      <Text
-        style={{ fontFamily: 'overpass-bold', fontSize: IS_IOS ? 13.5 : 13 }}
+    <ResizeableContainer
+      id="control-informations-container"
+      style={style.container}
+    >
+      <ResizeableText
+        id="control-informations-header-text"
+        style={{ fontFamily: "overpass-bold" }}
       >
         Informations de contrôle
-      </Text>
+      </ResizeableText>
 
-      <Text
-        style={{
-          fontFamily: 'overpass-black',
-          fontSize: IS_IOS ? 24 : 24,
-          margin: IS_IOS ? 0 : -4,
-        }}
+      <ResizeableText
+        id="control-informations-date-text"
+        style={{ fontFamily: "overpass-black", margin: 0 }}
       >
         {getFormatedDate(date)}
-      </Text>
+      </ResizeableText>
 
-      <Text
-        style={{
-          fontFamily: 'overpass-regular',
-          fontSize: 21,
-          marginTop: IS_IOS ? -5 : -6,
-        }}
+      <ResizeableText
+        id="control-informations-end-time-text"
+        style={{ fontFamily: "overpass-regular", marginTop: -5 }}
       >
         {getAfterHour(date).toString()}
-      </Text>
+      </ResizeableText>
 
-      <Text
-        style={{
-          fontFamily: 'overpass-black',
-          fontSize: 22,
-          marginTop: IS_IOS ? 2 : -4,
-        }}
+      <ResizeableText
+        id="control-informations-id-text"
+        style={{ fontFamily: "overpass-black", marginTop: 2 }}
       >
         131-60E5867820987
-      </Text>
+      </ResizeableText>
 
       <Image
         style={{
-          position: 'absolute',
+          position: "absolute",
           top: 20,
           left: 10,
           height: 57,
@@ -97,7 +76,7 @@ const ControlInfos: FC<IProps> = ({ date }) => {
         }}
         source={UserImage}
       />
-    </View>
+    </ResizeableContainer>
   );
 };
 
