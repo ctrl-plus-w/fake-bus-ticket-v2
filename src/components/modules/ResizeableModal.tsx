@@ -57,7 +57,7 @@ const ResizeableModal = ({
   const submit = async () => {
     if (!resizingId || !value) return;
 
-    await AsyncStorage.setItem(resizingId, value.toString());
+    await AsyncStorage.setItem(resizingId, JSON.stringify(value));
 
     setResizingId(undefined);
   };

@@ -12,28 +12,26 @@ import {
 import ResizeableContainer from "@/element/ResizeableContainer";
 import ResizeableText from "@/element/ResizeableText";
 
+const style = StyleSheet.create({
+  container: {
+    zIndex: 1,
+    position: "absolute",
+    backgroundColor: "#fff",
+
+    borderRadius: 16,
+  },
+});
+
 interface IProps {
   date: Date;
 }
 
 const TicketInfos: FC<IProps> = ({ date }) => {
-  const IS_IOS = Platform.OS === "ios";
-
-  const style = StyleSheet.create({
-    container: {
-      zIndex: 1,
-      position: "absolute",
-      backgroundColor: "#fff",
-
-      borderRadius: 16,
-    },
-  });
-
   return (
     <ResizeableContainer id="ticket-infos-container" style={style.container}>
       <ResizeableText
         id="ticket-infos-header-text"
-        style={{ fontFamily: "overpass-bold", fontSize: IS_IOS ? 21 : 20 }}
+        style={{ fontFamily: "overpass-bold" }}
       >
         Ticket unitaire
       </ResizeableText>
