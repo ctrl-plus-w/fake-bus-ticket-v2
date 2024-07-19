@@ -7,7 +7,6 @@ import {
   Dimensions,
   ScrollView,
   StyleProp,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -24,7 +23,7 @@ interface IProps {
   value: TResizeableContainer;
   onValueChange: (p: keyof TResizeableContainer) => (v: number) => void;
 
-  property: keyof NumberProperties<TResizeableContainer>;
+  property: keyof NumberOrUndefinedProperties<TResizeableContainer>;
 
   style?: StyleProp<ViewStyle>;
 }
@@ -99,31 +98,74 @@ const ResizeableModalText = ({
 
       <ScrollView style={{ width: "100%" }}>
         <View style={{ display: "flex", flexDirection: "row", width: "100%" }}>
-          <ValueEditor
-            min={1}
-            max={deviceWidth}
-            value={value}
-            onValueChange={onValueChange}
-            property="width"
-          />
+          {defaultValue.width !== undefined && (
+            <ValueEditor
+              min={1}
+              max={deviceWidth}
+              value={value}
+              onValueChange={onValueChange}
+              property="width"
+            />
+          )}
 
-          <ValueEditor
-            min={1}
-            max={deviceHeight}
-            value={value}
-            onValueChange={onValueChange}
-            property="height"
-          />
+          {defaultValue.height !== undefined && (
+            <ValueEditor
+              min={1}
+              max={deviceHeight}
+              value={value}
+              onValueChange={onValueChange}
+              property="height"
+            />
+          )}
         </View>
 
-        <ValueEditor
-          min={0}
-          max={deviceHeight}
-          value={value}
-          onValueChange={onValueChange}
-          property="top"
-          style={{ width: "100%" }}
-        />
+        <View style={{ display: "flex", flexDirection: "row", width: "100%" }}>
+          {defaultValue.top !== undefined && (
+            <ValueEditor
+              min={0}
+              max={deviceHeight}
+              value={value}
+              onValueChange={onValueChange}
+              property="top"
+              style={{ width: "100%" }}
+            />
+          )}
+
+          {defaultValue.bottom !== undefined && (
+            <ValueEditor
+              min={0}
+              max={deviceHeight}
+              value={value}
+              onValueChange={onValueChange}
+              property="bottom"
+              style={{ width: "100%" }}
+            />
+          )}
+        </View>
+
+        <View style={{ display: "flex", flexDirection: "row", width: "100%" }}>
+          {defaultValue.paddingVertical !== undefined && (
+            <ValueEditor
+              min={0}
+              max={deviceHeight}
+              value={value}
+              onValueChange={onValueChange}
+              property="paddingVertical"
+              style={{ width: "100%" }}
+            />
+          )}
+
+          {defaultValue.paddingHorizontal !== undefined && (
+            <ValueEditor
+              min={0}
+              max={deviceHeight}
+              value={value}
+              onValueChange={onValueChange}
+              property="paddingHorizontal"
+              style={{ width: "100%" }}
+            />
+          )}
+        </View>
 
         <Button title="Modifier" onPress={submit} />
       </ScrollView>

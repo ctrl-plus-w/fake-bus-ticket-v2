@@ -14,15 +14,23 @@ import ResizeableModal from "@/module/ResizeableModal";
 import { getResizeableValue } from "@/helper/resizeable.helper";
 
 interface IContext {
+  isResizeMode: boolean;
+  setIsResizeMode: Dispatch<SetStateAction<boolean>>;
+
   resizeableValues: TResizeable;
   refreshResizeableValues: () => Promise<void>;
+
   resizingId: TResizeableIds | undefined;
   setResizingId: Dispatch<SetStateAction<TResizeableIds | undefined>>;
 }
 
 const defaultContext = {
+  isResizeMode: false,
+  setIsResizeMode: () => null,
+
   resizeableValues: RESIZEABLE,
   refreshResizeableValues: async () => undefined,
+
   resizingId: undefined,
   setResizingId: () => null,
 } satisfies IContext;
@@ -73,6 +81,10 @@ interface IProps {
 }
 
 const ResizeableProvider = ({ children }: IProps) => {
+  const [isResizeMode, setIsResizeMode] = useState<boolean>(
+    defaultContext.isResizeMode,
+  );
+
   const [resizeableValues, setResizeableValues] = useState<TResizeable>(
     defaultContext.resizeableValues,
   );
@@ -98,8 +110,12 @@ const ResizeableProvider = ({ children }: IProps) => {
   return (
     <ResizeableContext.Provider
       value={{
-        refreshResizeableValues,
+        isResizeMode,
+        setIsResizeMode,
+
         resizeableValues,
+        refreshResizeableValues,
+
         resizingId,
         setResizingId,
       }}
@@ -108,6 +124,7 @@ const ResizeableProvider = ({ children }: IProps) => {
         {...{
           resizeableValues,
           setResizeableValues,
+
           resizingId,
           setResizingId,
         }}

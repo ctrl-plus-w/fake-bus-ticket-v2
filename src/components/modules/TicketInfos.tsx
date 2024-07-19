@@ -1,117 +1,91 @@
-import { View, Text, Platform, StyleSheet } from 'react-native';
+import { View, Text, Platform, StyleSheet } from "react-native";
 
-import type { FC } from 'react';
+import type { FC } from "react";
 
-import React from 'react';
+import React from "react";
 
 import {
   getAfterHour,
   getBeforeHour,
   getFormatedDate,
-} from '@/helper/date.helper';
+} from "@/helper/date.helper";
+import ResizeableContainer from "@/element/ResizeableContainer";
+import ResizeableText from "@/element/ResizeableText";
 
 interface IProps {
   date: Date;
 }
 
 const TicketInfos: FC<IProps> = ({ date }) => {
-  const IS_IOS = Platform.OS === 'ios';
+  const IS_IOS = Platform.OS === "ios";
 
   const style = StyleSheet.create({
     container: {
       zIndex: 1,
-      position: 'absolute',
-      backgroundColor: '#fff',
+      position: "absolute",
+      backgroundColor: "#fff",
 
       borderRadius: 16,
-
-      paddingHorizontal: 15,
-
-      ...Platform.select({
-        ios: {
-          top: 567,
-
-          width: 384,
-          height: 128,
-
-          paddingVertical: 10,
-        },
-        android: {
-          top: 542,
-
-          width: 368,
-          height: 123,
-
-          paddingVertical: 8,
-        },
-      }),
     },
   });
 
   return (
-    <View style={style.container} pointerEvents='none'>
-      <Text style={{ fontFamily: 'overpass-bold', fontSize: IS_IOS ? 21 : 20 }}>
+    <ResizeableContainer id="ticket-infos-container" style={style.container}>
+      <ResizeableText
+        id="ticket-infos-header-text"
+        style={{ fontFamily: "overpass-bold", fontSize: IS_IOS ? 21 : 20 }}
+      >
         Ticket unitaire
-      </Text>
+      </ResizeableText>
 
-      <View style={{ alignItems: 'center', marginTop: IS_IOS ? 8 : 6 }}>
-        <Text
-          style={{
-            fontFamily: 'overpass-regular',
-            fontSize: IS_IOS ? 14 : 13.5,
-          }}
-        >
-          Période de validité
-        </Text>
-      </View>
+      <ResizeableText
+        id="ticket-infos-subheader-text"
+        style={{
+          fontFamily: "overpass-regular",
+          width: "100%",
+          textAlign: "center",
+        }}
+      >
+        Période de validité
+      </ResizeableText>
 
       <View
         style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginTop: IS_IOS ? 0 : -4,
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
         }}
       >
-        <View style={{ alignItems: 'center' }}>
-          <Text
-            style={{
-              fontFamily: 'overpass-black',
-              fontSize: IS_IOS ? 24.5 : 23,
-            }}
+        <View style={{ alignItems: "center" }}>
+          <ResizeableText
+            id="ticket-infos-start-date-text"
+            style={{ fontFamily: "overpass-black" }}
           >
             {getFormatedDate(date)}
-          </Text>
-          <Text
-            style={{
-              fontFamily: 'overpass-regular',
-              fontSize: IS_IOS ? 23 : 22,
-              marginTop: IS_IOS ? -5 : -10,
-            }}
+          </ResizeableText>
+          <ResizeableText
+            id="ticket-infos-start-time-text"
+            style={{ fontFamily: "overpass-regular" }}
           >
             {getBeforeHour(date).toString()}
-          </Text>
+          </ResizeableText>
         </View>
-        <View style={{ alignItems: 'center' }}>
-          <Text
-            style={{
-              fontFamily: 'overpass-black',
-              fontSize: IS_IOS ? 24.5 : 23,
-            }}
+        <View style={{ alignItems: "center" }}>
+          <ResizeableText
+            id="ticket-infos-end-date-text"
+            style={{ fontFamily: "overpass-black" }}
           >
             {getFormatedDate(date)}
-          </Text>
-          <Text
-            style={{
-              fontFamily: 'overpass-regular',
-              fontSize: IS_IOS ? 23 : 22,
-              marginTop: IS_IOS ? -5 : -10,
-            }}
+          </ResizeableText>
+          <ResizeableText
+            id="ticket-infos-end-time-text"
+            style={{ fontFamily: "overpass-regular" }}
           >
             {getAfterHour(date).toString()}
-          </Text>
+          </ResizeableText>
         </View>
       </View>
-    </View>
+    </ResizeableContainer>
   );
 };
 

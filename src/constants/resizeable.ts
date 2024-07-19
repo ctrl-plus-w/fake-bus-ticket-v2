@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { StyleSheet } from "react-native";
+import { Animated, StyleSheet } from "react-native";
 
 export enum ResizeableType {
   "TEXT" = "TEXT",
@@ -13,16 +13,21 @@ export const ResizeableTextSchema = z.object({
 
 export type TResizeableText = z.infer<typeof ResizeableTextSchema>;
 
+const optionalPositiveNumber = z.number().positive().optional();
+
 export const ResizeableContainerSchema = z.object({
   type: z.literal(ResizeableType.CONTAINER),
 
-  top: z.number().positive(),
+  top: optionalPositiveNumber,
+  bottom: optionalPositiveNumber,
+  left: optionalPositiveNumber,
+  right: optionalPositiveNumber,
 
-  width: z.number().positive(),
-  height: z.number().positive(),
+  width: optionalPositiveNumber,
+  height: optionalPositiveNumber,
 
-  paddingVertical: z.number().positive(),
-  paddingHorizontal: z.number().positive(),
+  paddingVertical: optionalPositiveNumber,
+  paddingHorizontal: optionalPositiveNumber,
 });
 
 export type TResizeableContainer = z.infer<typeof ResizeableContainerSchema>;
@@ -62,6 +67,56 @@ const RESIZEABLE = {
 
     paddingVertical: 6,
     paddingHorizontal: 15,
+  },
+  "ticket-infos-header-text": {
+    type: ResizeableType.TEXT,
+    fontSize: 21,
+  },
+  "ticket-infos-subheader-text": {
+    type: ResizeableType.TEXT,
+    fontSize: 14,
+  },
+  "ticket-infos-start-date-text": {
+    type: ResizeableType.TEXT,
+    fontSize: 24.5,
+  },
+  "ticket-infos-end-date-text": {
+    type: ResizeableType.TEXT,
+    fontSize: 24.5,
+  },
+  "ticket-infos-start-time-text": {
+    type: ResizeableType.TEXT,
+    fontSize: 23,
+  },
+  "ticket-infos-end-time-text": {
+    type: ResizeableType.TEXT,
+    fontSize: 23,
+  },
+
+  "ticket-infos-container": {
+    type: ResizeableType.CONTAINER,
+
+    top: 567,
+
+    width: 384,
+    height: 128,
+
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+  },
+  "status-bar-container": {
+    type: ResizeableType.CONTAINER,
+
+    left: 15,
+    bottom: 54,
+
+    width: 384,
+    height: 10,
+  },
+  "spinner-container": {
+    type: ResizeableType.CONTAINER,
+
+    top: 0,
   },
 } as const satisfies TResizeable;
 

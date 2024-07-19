@@ -1,28 +1,10 @@
-import {
-  Button,
-  Modal,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { XIcon } from "lucide-react-native";
-import Slider from "@react-native-community/slider";
+import { Modal } from "react-native";
 import RESIZEABLE, {
-  TResizeableIds,
-  TResizeableData,
   TResizeable,
-  ResizeableType,
-  TResizeableText,
+  TResizeableData,
+  TResizeableIds,
 } from "@/constant/resizeable";
-import {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import {
   getResizeableValue,
   isResizeableContainerData,
@@ -30,7 +12,6 @@ import {
 } from "@/helper/resizeable.helper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ResizeableModalText from "@/module/ResizeableModalText";
-import ResizeableContainer from "@/element/ResizeableContainer";
 import ResizeableModalContainer from "@/module/ResizeableModalContainer";
 
 interface IProps {
@@ -99,6 +80,8 @@ const ResizeableModal = ({
       return (
         <ResizeableModalContainer {...{ ...props, value, defaultValue }} />
       );
+
+    close().then();
   }, [value, setValue, resizingId]);
 
   return (

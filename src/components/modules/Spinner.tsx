@@ -1,10 +1,11 @@
-import { Animated, Easing, View } from 'react-native';
+import { Animated, Easing, View } from "react-native";
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from "react";
 
-import type { FC } from 'react';
+import type { FC } from "react";
 
-import React from 'react';
+import React from "react";
+import { useResizeable } from "@/context/ResizeableContext";
 
 interface IProps {
   containerSize: number;
@@ -19,16 +20,18 @@ interface IProps {
  * This module is the spinner in the center of the screen.
  */
 const Spinner: FC<IProps> = ({ containerSize, circleSize, isTouching }) => {
+  const { isResizeMode } = useResizeable();
+
   const CONTAINER_HALF_SIZE = containerSize / 2;
   const CIRCLE_HALF_SIZE = circleSize / 2;
 
-  const [backgroundColors] = useState(['#391e0c', '#ff4136']);
-
   const progress = useRef(new Animated.Value(0)).current;
-  const [active, setActive] = useState('animate');
+
+  const [backgroundColors] = useState(["#391e0c", "#ff4136"]);
+  const [active, setActive] = useState("animate");
 
   const animate = () => {
-    setActive('animate');
+    setActive("animate");
     progress.setValue(0);
 
     Animated.timing(progress, {
@@ -37,14 +40,13 @@ const Spinner: FC<IProps> = ({ containerSize, circleSize, isTouching }) => {
       easing: Easing.linear,
       useNativeDriver: true,
     }).start((event) => {
-      if (event.finished) {
-        animate();
-      }
+      if (event.finished) animate();
     });
   };
 
   const animateBis = () => {
-    setActive('animateBis');
+    setActive("animateBis");
+
     progress.setValue(0);
 
     Animated.timing(progress, {
@@ -63,32 +65,37 @@ const Spinner: FC<IProps> = ({ containerSize, circleSize, isTouching }) => {
     if (isTouching) {
       progress.stopAnimation();
       animateBis();
-    } else if (active === 'animateBis') {
+    } else if (active === "animateBis") {
       progress.stopAnimation();
       animate();
     }
   }, [isTouching]);
 
   useEffect(() => {
-    animate();
+    if (isResizeMode) progress.stopAnimation();
+    else animate();
+  }, [isResizeMode]);
+
+  useEffect(() => {
+    if (isResizeMode) animate();
   }, []);
 
   const interpolateRotation = progress.interpolate({
     inputRange: [1, 2],
-    outputRange: ['0deg', '360deg'],
+    outputRange: ["0deg", "360deg"],
   });
 
   return (
     <Animated.View
       style={{
-        width: '100%',
-        height: '100%',
+        width: "100%",
+        height: "100%",
         transform: [{ rotate: interpolateRotation }],
       }}
     >
       <View
         style={{
-          position: 'absolute',
+          position: "absolute",
 
           top: CONTAINER_HALF_SIZE - CIRCLE_HALF_SIZE,
           left: 0 - CIRCLE_HALF_SIZE,
@@ -104,7 +111,7 @@ const Spinner: FC<IProps> = ({ containerSize, circleSize, isTouching }) => {
 
       <View
         style={{
-          position: 'absolute',
+          position: "absolute",
 
           top: CONTAINER_HALF_SIZE - CIRCLE_HALF_SIZE,
           left: containerSize - CIRCLE_HALF_SIZE,

@@ -41,3 +41,7 @@ declare interface ObjectConstructor {
 declare type NumberProperties<T> = {
   [K in keyof T as T[K] extends number ? K : never]: T[K];
 };
+
+declare type NumberOrUndefinedProperties<T> = {
+  [K in keyof T as T[K] extends number | undefined ? K : never]: T[K];
+};

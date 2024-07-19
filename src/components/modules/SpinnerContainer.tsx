@@ -4,16 +4,19 @@ import {
   View,
   GestureResponderEvent,
   useWindowDimensions,
-} from 'react-native';
+} from "react-native";
 
-import { FC, useState } from 'react';
+import { FC, useState } from "react";
 
-import React from 'react';
+import React from "react";
 
-import Spinner from '@/module/Spinner';
+import Spinner from "@/module/Spinner";
+import { useResizeable } from "@/context/ResizeableContext";
 
 const SpinnerContainer: FC = () => {
-  const IS_IOS = Platform.OS === 'ios';
+  const { isResizeMode } = useResizeable();
+
+  const IS_IOS = Platform.OS === "ios";
 
   const dimensions = useWindowDimensions();
 
@@ -52,24 +55,25 @@ const SpinnerContainer: FC = () => {
   return (
     <View
       style={{
-        zIndex: 9999999,
-        position: 'absolute',
+        zIndex: 20,
+        position: "absolute",
         top: 0,
         left: 0,
         bottom: 0,
         right: 0,
+        pointerEvents: isResizeMode ? "none" : "auto",
       }}
       onStartShouldSetResponder={() => true}
       onResponderMove={handleMove}
       onResponderRelease={handleRelease}
     >
       <Animated.View
-        pointerEvents='none'
+        pointerEvents="none"
         style={{
-          zIndex: 99999,
-          position: 'absolute',
+          zIndex: 10,
+          position: "absolute",
 
-          top: Animated.subtract(touch.y, CONTAINER_HALF_SIZE),
+          top: Animated.subtract(touch.y, CONTAINER_HALF_SIZE + 30),
           left: Animated.subtract(touch.x, CONTAINER_HALF_SIZE),
 
           width: CONTAINER_SIZE,
