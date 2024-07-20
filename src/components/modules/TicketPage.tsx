@@ -1,5 +1,5 @@
 import { Animated, ImageBackground, View } from "react-native";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import ControlInfos from "@/module/ControlInfos";
 
 import Time from "@/class/Time";
@@ -25,11 +25,19 @@ const TicketPage = ({ date }: IProps) => {
 
   const animationStyle = useTicketPageAnimation();
 
-  const nowSecondsDiff = useMemo(
-    () =>
-      Time.fromDate(new Date()).asSeconds() - Time.fromDate(date).asSeconds(),
-    [date],
+  const [nowSecondsDiff, setNowSecondsDiff] = useState(
+    Time.fromDate(new Date()).asSeconds() - Time.fromDate(date).asSeconds(),
   );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNowSecondsDiff(
+        Time.fromDate(new Date()).asSeconds() - Time.fromDate(date).asSeconds(),
+      );
+    }, 30 * 1000);
+
+    return () => clearInterval(interval);
+  }, [date]);
 
   return (
     <Animated.View
